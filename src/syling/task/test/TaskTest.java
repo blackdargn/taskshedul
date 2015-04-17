@@ -16,17 +16,17 @@ public class TaskTest {
     public static TaskTest instance = new TaskTest();
     private TaskExecutor mExecutor;
     private TaskTest(){
-        mExecutor = new TaskExecutor(true, 5, 128, 2000, 10000);
+        mExecutor = new TaskExecutor(true, 5, 128, 2000, 20000);
     }
 
-    // 测试多个任务
+    /** 测试多个任务 */
     public void testPools(TaskContext context, int num, TaskHandler.NotifyListener<Integer> listener){
         for (int i=0; i < num; i++){
             mExecutor.submit(new TxTask(context , i, listener));
         }
     }
 
-    // 测试任务同步
+    /** 测试任务同步 */
     public void testWait(TaskHandler.NotifyListener<Integer> listener){
         mExecutor.submit(new ExTask<Integer>(listener) {
             @Override
@@ -49,7 +49,7 @@ public class TaskTest {
           .setTag(1 + ""));
     }
 
-    // 测试任务顺序
+    /**  测试任务顺序 */
     public void testSeq(TaskContext context, int num, TaskHandler.NotifyListener<Integer> listener){
         ExTask task = new TxTask(context, 0, listener);
         for (int i=1; i < num; i++){
@@ -63,15 +63,17 @@ public class TaskTest {
         mExecutor.submit(task);
     }
 
-    // 取消所有
+    /** 取消所有 */
     public void testCanAll(){
         mExecutor.cancelAll();
     }
 
+    /** 按前缀取消 */
     public void testCanPrix(String prix){
         mExecutor.cancelByPrix(prix);
     }
 
+    /** 按指定取消 */
     public void testCanTag(String tag){
         mExecutor.cancel(tag);
     }

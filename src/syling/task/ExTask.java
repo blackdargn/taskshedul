@@ -10,37 +10,60 @@ import java.util.concurrent.locks.ReentrantLock;
  * 可执行任务
  */
 public abstract class ExTask<T> implements Runnable{
-    // 任务的优先级
+    /** 任务的优先级 */
     public static enum TaskPriority{
-        UI,// 非耗时UI操作，用于定时UI任务
-        LOCAL,// 应用本地耗时操作，如DB、File等
-        S_NETWORK,// 小量耗时网络请求，如API流量小的请求
-        UNKNOWN,// 不确定的耗时操作
-        L_NETWORK,// 大量耗时网络请求，文件上传或者下载
+        /** 非耗时UI操作，用于定时UI任务*/
+        UI,
+        /** 应用本地耗时操作，如DB、File等*/
+        LOCAL,
+        /** 小量耗时网络请求，如API流量小的请求*/
+        S_NETWORK,
+        /** 不确定的耗时操作*/
+        UNKNOWN,
+        /** 大量耗时网络请求，文件上传或者下载*/
+        L_NETWORK
     }
-    // 任务回调监听器
+    /** 任务回调监听器 */
     WeakReference<TaskHandler.NotifyListener<T>> mUiListener;
     TaskHandler.NotifyListener<T> mBackListener;
 
-    // 执行的参数
+    /**
+     * 执行的参数
+     */
     Object[] mParams;
-    // 执行的结果
+    /**
+     * 执行的结果
+     */
     private T mResult;
-    // 执行的上下文
+    /**
+     * 执行的上下文
+     */
     TaskContext mContext;
-    // 该任务的标签，一对一对应，前缀表示一个组，如 image_xx
+    /**
+     * 该任务的标签，一对一对应，前缀表示一个组，如 image_xx
+     */
     String mTag;
-    // 超时时间
-    long timeout = 0;
-    // 任务权限，默认为LOCAL
+    /**
+     * 超时时间
+     */
+    long timeout;
+    /**
+     * 任务权限，默认为LOCAL
+     */
     TaskPriority mPriority = TaskPriority.LOCAL;
-    // 在相同TaskPriority下，是否先执行，是放在头，否放在尾
+    /**
+     * 在相同TaskPriority下，是否先执行，是放在头，否放在尾
+     */
     boolean isFirst = false;
-    // 是否取消
+    /**
+     * 是否取消
+     */
     private final Lock mLock = new ReentrantLock();
     private boolean isCanceled = false;
     private boolean isDoing    = false;
-    // 同步锁
+    /**
+     * 同步锁
+     */
     private final Object mSynLock = new Object();
     private ArrayList<ExTask> mSubTask;
 
@@ -86,7 +109,12 @@ public abstract class ExTask<T> implements Runnable{
         return this;
     }
 
-    // 下一个顺序任务,按照层级顺序
+    /**
+     * 下一个顺序任务
+     * @param task
+     * @return
+     * @throws Exception 当任务已经开始执行后，会抛出
+     */
     public ExTask next(ExTask task) throws Exception{
         mLock.lock();
         try{
@@ -104,7 +132,12 @@ public abstract class ExTask<T> implements Runnable{
         }
     }
 
-    // 下一个顺序任务,按照层级顺序
+    /**
+     * 任务放在头
+     * @param task
+     * @return
+     * @throws Exception 当任务已经开始执行后，会抛出
+     */
     public ExTask first(ExTask task) throws Exception{
         mLock.lock();
         try{
@@ -122,7 +155,12 @@ public abstract class ExTask<T> implements Runnable{
         }
     }
 
-    // 下一个顺序任务,按照层级顺序
+    /**
+     * 移除子序列任务按照Tag
+     * @param tag
+     * @return
+     * @throws Exception 当任务已经开始执行后，会抛出
+     */
     public boolean remove(String tag) throws Exception{
         mLock.lock();
         try{
@@ -176,7 +214,9 @@ public abstract class ExTask<T> implements Runnable{
         }
     }
 
-    // 同步等待
+    /**
+     * 同步等待
+     */
     public void waitFinish(){
         if(TaskHandler.isMainThread()){
             // 主线程无法等待
@@ -191,7 +231,9 @@ public abstract class ExTask<T> implements Runnable{
         }
     }
 
-    // 同步唤醒
+    /**
+     * 同步唤醒
+     */
     protected void notifyFinish(){
         synchronized (mSynLock){
             mSynLock.notifyAll();

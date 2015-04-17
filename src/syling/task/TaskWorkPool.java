@@ -16,12 +16,12 @@ class TaskWorkPool {
 
     /** 空闲时间*/
     int mIdleTime = 2000;
+    /** 超时时间*/
+    int mTimeOut = 30000;
     /** 最大工作数量*/
     private int mMaxNum  = 128;
     /** 保留核心数量*/
     private int mCoreNum = 5;
-    /** 超时时间*/
-    int mTimeOut = 30000;
     /** 是否是固定核心线程*/
     private boolean isFixCore = true;
 
@@ -30,6 +30,15 @@ class TaskWorkPool {
     private TaskExecutor mTaskExecutor;
     private WorkThreader mDemanWorker;
 
+    /**
+     * 任务工作池
+     * @param executor 任务调度者
+     * @param isFixCore 是否固定核心线程
+     * @param coreSize 核心线程的数量
+     * @param maxNum  最大线程数，当isFixCore为false时有效
+     * @param idleTime 线程空闲时间ms，当isFixCore为false时有效
+     * @param timeOut 线程执行超时时间ms，默认超时时间，可单独定制task的超时
+     */
     TaskWorkPool(TaskExecutor executor, boolean isFixCore, int coreSize, int maxNum, int idleTime, int timeOut){
         this.mCoreNum = coreSize;
         this.isFixCore = isFixCore;
@@ -56,7 +65,7 @@ class TaskWorkPool {
         mDemanWorker._notify();
     }
 
-    // 通知开始工作
+    /** 通知开始工作 */
     void notifyTake() {
         mLock.lock();
         try{
@@ -89,8 +98,9 @@ class TaskWorkPool {
         }
     }
 
-    /** 检查超时与是否有运行线程，
-     *  <0, 满固定核心的人在工作
+    /**
+     * 检查超时与是否有运行线程，
+     * @return <0, 满固定核心的人在工作
      *  =0, 都停止工作
      *  >0, 有人在工作*/
     public int check(){
@@ -121,7 +131,7 @@ class TaskWorkPool {
         }
     }
 
-    // 移除消亡的工作线程
+    /** 移除消亡的工作线程 */
     public void mvWork(WorkThreader worker){
         mLock.lock();
         try{

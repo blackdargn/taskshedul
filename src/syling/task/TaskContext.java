@@ -2,7 +2,7 @@ package syling.task;
 
 /**
  * Created by Administrator on 2015/3/21 0021.
- * 任务上下文
+ * 任务上下文，生命周期监控
  */
 public interface TaskContext {
 

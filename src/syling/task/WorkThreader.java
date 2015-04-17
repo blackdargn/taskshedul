@@ -12,17 +12,17 @@ import java.util.Queue;
  */
 class WorkThreader extends Thread{
     public static volatile int COUNT = 0;
-    // 开始执行时间，外部只读
+    /** 开始执行时间，外部只读 */
     private volatile long mStartTime;
-    // 是否是核心线程
+    /** 是否是核心线程 */
     private boolean isCore = true;
-    // 是否是守护线程
+    /** 是否是守护线程 */
     private boolean _isDaemon = false;
 
     private boolean isStop = false;
     private final Object mLock = new Object();
 
-    // 顺序子任务
+    /**  顺序子任务 */
     private Queue<ExTask> mSeqQueue;
     private TaskWorkPool mPools;
     private ExTask mTask;

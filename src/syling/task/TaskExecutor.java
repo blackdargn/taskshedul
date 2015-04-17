@@ -18,13 +18,21 @@ public class TaskExecutor {
     /** 任务队列,自己按照顺序与优先级添加到线程中*/
     private final ConcurrentHashMap< ExTask.TaskPriority, ArrayDeque<ExTask>> mTaskChannels
             = new ConcurrentHashMap<ExTask.TaskPriority, ArrayDeque<ExTask>>();
-    // 待执行任务集合
+    /** 待执行任务集合  */
     private final ConcurrentHashMap<Integer, ExTask> mPendingTasks = new ConcurrentHashMap<Integer, ExTask>();
-    // 正在执行任务集合
+    /**正在执行任务集合 */
     private final ConcurrentHashMap<Integer, ExTask> mRunningTasks = new ConcurrentHashMap<Integer, ExTask>();
     /** 工作池*/
     private TaskWorkPool mWorkPools;
 
+    /**
+     * 任务调度者
+     * @param isFixCore 是否固定核心线程
+     * @param coreSize 核心线程的数量
+     * @param maxNum  最大线程数，当isFixCore为false时有效
+     * @param idleTime 线程空闲时间ms，当isFixCore为false时有效
+     * @param timeOut 线程执行超时时间ms，默认超时时间，可单独定制task的超时
+     */
     public TaskExecutor(boolean isFixCore, int coreSize, int maxNum, int idleTime, int timeOut){
         mWorkPools = new TaskWorkPool(this, isFixCore, coreSize, maxNum, idleTime, timeOut);
     }
@@ -170,7 +178,7 @@ public class TaskExecutor {
         return null;
     }
 
-    // 执行完成后移除
+    /** 执行完成后移除 */
     void mvRunningTask(int key){
         if(mRunningTasks.containsKey(key)) {
             mRunningTasks.remove(key);

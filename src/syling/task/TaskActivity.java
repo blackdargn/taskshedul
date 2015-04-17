@@ -3,6 +3,7 @@ package syling.task;
 import android.app.Activity;
 
 /**
+ * 任务周期基础Activity
  * Created by Administrator on 2015/3/24 0024.
  */
 public class TaskActivity extends Activity implements TaskContext{
