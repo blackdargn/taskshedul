@@ -16,6 +16,7 @@ class WorkThreader extends Thread{
     private volatile long mStartTime;
     // 是否是核心线程
     private boolean isCore = true;
+    // 是否是守护线程
     private boolean _isDaemon = false;
 
     private boolean isStop = false;
