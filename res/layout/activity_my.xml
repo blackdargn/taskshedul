@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+   android:orientation="vertical">
+
+  <TextView
+    android:id="@+id/my_hello_text_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@id/my_hello_text_view">
+    <Button
+        android:id="@+id/clickMeBtn"
+        android:text="submit"
+        android:onClick="clickMeBtnPressed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/clickMeBtn2"
+        android:text="jump"
+        android:onClick="clickMeBtnPressed2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/clickMeBtn3"
+        android:text="wait"
+        android:onClick="clickMeBtnPressed3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/clickMeBtn4"
+        android:text="seq"
+        android:onClick="clickMeBtnPressed4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <Button
+                android:id="@+id/clickMeBtn7"
+                android:text="cancelTag"
+                android:onClick="clickMeBtnPressed7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <Button
+                android:id="@+id/clickMeBtn5"
+                android:text="cancelAll"
+                android:onClick="clickMeBtnPressed5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <Button
+                android:id="@+id/clickMeBtn6"
+                android:text="cancelPrix"
+                android:onClick="clickMeBtnPressed6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+    <TextView
+        android:id="@+id/tvShow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:singleLine="false"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
